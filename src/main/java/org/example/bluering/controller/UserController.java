@@ -4,6 +4,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.example.bluering.service.UserService;
 
+import java.util.Map;
+
 @CrossOrigin(origins = "*")
 @RestController
 @RequestMapping("/api/users")
@@ -13,10 +15,16 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    //Create or update user
+    //Create or update the entire user
     @PostMapping("/save")
     public User saveUser(@RequestBody User user) {
         return userService.saveOrUpdateUser(user);
+    }
+
+    //Partially update a user
+    @PatchMapping("/update/{id}")
+    public User updateUser(@PathVariable int id, @RequestBody Map<String, Object> updates) {
+        return userService.updateUser(id, updates);
     }
 
     //Get a user by id
@@ -30,4 +38,5 @@ public class UserController {
     public void deleteUser(@PathVariable int id) {
         userService.deleteUserById(id);
     }
+
 }
